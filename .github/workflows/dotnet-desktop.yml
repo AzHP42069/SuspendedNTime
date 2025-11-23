@@ -56,10 +56,10 @@ jobs:
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
-      Solution_Name: Tooth.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
+      Solution_Name: Suspended.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
       #Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
-      Wap_Project_Directory: Tooth.Package    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
-      Wap_Project_Path: Tooth.Package\Tooth.Package.wapproj                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+      Wap_Project_Directory: Suspended.Package    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
+      Wap_Project_Path: Suspended.Package\Suspended.Package.wapproj                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
       BUILD_CONFIGURATION: ${{ matrix.configuration }}
 
     steps:
@@ -101,5 +101,5 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: Tooth_App_Package_${{ env.BUILD_CONFIGURATION }}_x64_${{ github.run_id }}
+        name: Suspended_App_Package_${{ env.BUILD_CONFIGURATION }}_x64_${{ github.run_id }}
         path: ${{ env.Wap_Project_Directory }}\AppPackages\${{ env.BUILD_CONFIGURATION }}

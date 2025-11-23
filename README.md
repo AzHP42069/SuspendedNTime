@@ -6,11 +6,11 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/BassemMohsen/ToothNClaw?style=for-the-badge&color=yellow&label=Stars)
 
 <h1 align="center">
-  <img width="788" height="364" alt="Tooth N Claw Banner" src="https://github.com/user-attachments/assets/2405791a-4a9e-4a29-8c4c-8528ac5782e1">
+  <img width="788" height="364" alt="Suspended N Time Banner" src="https://github.com/user-attachments/assets/2405791a-4a9e-4a29-8c4c-8528ac5782e1">
 </h1>
 
 
-**Tooth N Claw Xbox Game Bar Widget** brings native, controller-friendly performance tuning directly into your gameplay experience.
+**Suspended N Time Xbox Game Bar Widget** brings native, controller-friendly performance tuning directly into your gameplay experience.
 - On-the-fly tuning: Adjust APU power and graphics settings instantly from gamebar, mid-game, without interrupting your session.
 - Controller-first experience: Designed for handheld and couch gaming — no need to navigate desktop apps with tiny UI elements made for mouse and keyboard.
 - Filling Windows XBox Fullscreen Experience gaps letting gamers fine-tune system performance directly from the Xbox Game Bar — no more dropping to Desktop mode for simple APU changes.
@@ -18,27 +18,14 @@
 
 <img width="1920" height="1200" alt="Screenshot 2025-10-21 190036" src="https://github.com/user-attachments/assets/3504fcf3-bb55-4cb2-82ef-72573bf96b13" />
 
-**Tooth N Claw Color Remaster** 
 
-- Bring your games to life with Color Remaster, a hardware-accelerated color enhancement tool inspired by VibrantDeck.
-- Remaster your visuals: Transform your game’s color and mood — go full Matrix with deep green hues or recreate the golden tones of Lisan al Gaib from Dune.
-- OLED-like experience with punchy colors: Boost your display’s color intensity with Saturation and Contrast controls for rich, vivid output. (Contrast 55, Saturation: 58)
-- Hardware-accelerated performance: Powered by LUT (Look-Up Tables) blocks running directly on the display pipeline — 0% GPU compute usage and exceptional power efficiency from Intel.
-- Fine-tune your visuals: Adjust Brightness, Contrast, and Gamma to find your perfect balance between light and darkness.
-
-<img width="1920" height="1200" alt="Heroshot_ColorRemaster" src="https://github.com/user-attachments/assets/cedf8565-39e8-44ee-b553-26fff7752bcd" />
-
-- Next-gen LunarLake/PantherLaken sharpness: Unlock Intel Adaptive Sharpening — a novel feature by Intel that enhances blurred or upscaled content for a crisper, more detailed image while preserving natural textures.
-- Adaptive Sharpening is Efficient and smart: Runs entirely on Intel’s display engine block — no GPU load, no performance hit, and minimal power draw.
-
-<img width="1920" height="1200" alt="Intel_Adaptive_sharpening" src="https://github.com/user-attachments/assets/4093ed32-2707-4a0d-9420-096902a8c04b" />
 
 # ☕ Support Me
 If you like my work, you can buy me a coffee:   [![Donate via PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://paypal.me/bassemnomany)
 
 # [:floppy_disk: Download](https://apps.microsoft.com/detail/9MWZPXH1K9LD)
 
-Tooth N Claw is now officially available on the Microsoft Store!  
+Suspended N Time is now officially available on the Microsoft Store!  
 Click the badge below open directly: 
 
 <a href="https://apps.microsoft.com/detail/9MWZPXH1K9LD">
@@ -59,7 +46,6 @@ Click the badge below open directly:
 - **Xe Low Latency (XeLL)** – Reduces input latency by intelligently delaying frame presentation for improved responsiveness.
 - **Intel Graphics Software Launcher** – Provides quick access to the Intel Graphics Control Center, even when running in Xbox Game Bar full-screen mode.
 - **Hot Key function** using View button and X button marked in blue in the image [Only in Desktop mode, not XBox Fullscreen experience]
-- **Color Remaster** Contrast, Saturation, Brightness, Hue and Gamma.
 - **Intel Adaptive Sharpening** Enhance details in blurred or upscaled content to make it crisper. 
 
 Note: This is designed to be lightweight and complement MSI Quick Settings options. This is not intended to replace MSI Quick Settings.
@@ -76,18 +62,15 @@ Note: This is designed to be lightweight and complement MSI Quick Settings optio
 
 # Bugs & Features
 Found a bug and want it fixed? Have an idea for a new feature?
-Please [open an issue](https://github.com/BassemMohsen/ToothNClaw/issues) in the tracker.  
+Please [open an issue](https://github.com/BassemMohsen/SuspendedNTime/issues) in the tracker.  
 
 # Credits & Libraries
-- [Valkirie/HandheldCompanion](https://github.com/Valkirie/HandheldCompanion)
-- [Intel IGCL Library](https://github.com/intel/drivers.gpu.control-library)
+- [Merrit/nyrna](https://github.com/Merrit/nyrna)
 - [chenx-dust/RyzenAdjUWP](https://github.com/chenx-dust/RyzenAdjUWP)
 
-# Acknowledgements
-The Tooth N Claw experience is made possible thanks to Intel’s commitment to open source. A big thank-you to the Intel Graphics Team for providing the IGCL library, along with thorough documentation and numerous practical examples. Their well-designed APIs and samples have been invaluable in enabling Tooth N Claw to offer seamless Game Bar widget controls.
 
 # Frequently Asked Questions
-## How to uninstall my Tooth N Claw?
+## How to uninstall my Suspended N Time?
 Open Windows Settings -> Apps -> Installed Apps
-Uninstall Tooth N Claw using the ... -> Uninstall
+Uninstall Suspended N Time using the ... -> Uninstall
    
