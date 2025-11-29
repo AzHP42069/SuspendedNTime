@@ -56,7 +56,7 @@
     <Compile Include="BooleanToNegativeVisibilityConverter.cs" />
     <Compile Include="ColorToSuspendedStateConverter.cs" />
     <Compile Include="BooleanToSuspendedStateConverter.cs" />
-    <Compile Include="IconConverter.cs" />
+    <Compile Include="ExePathToIconConverter.cs" />
     <Compile Include="BooleanToVisibilityConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

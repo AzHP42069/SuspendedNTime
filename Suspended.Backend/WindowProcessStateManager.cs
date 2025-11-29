@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Gaming.Preview.GamesEnumeration;
+using Suspended.GameIconExtractor;
 
 namespace Suspended.Backend
 {
@@ -31,6 +35,7 @@ namespace Suspended.Backend
         private readonly Timer refreshTimer;
         private TimeSpan refreshRate;
         private bool refreshEnabled = true;
+        string localState = "";
 
         // ================================
         // Win32 API
@@ -68,7 +73,7 @@ namespace Suspended.Backend
         private static extern bool CloseHandle(IntPtr hObject);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern IntPtr OpenProcess(uint processAccess, bool bInheritHandle,int processId);
+        private static extern IntPtr OpenProcess(uint processAccess, bool bInheritHandle, int processId);
 
         private const int QueryLimitedInformation = 0x00001000;
 
@@ -105,6 +110,10 @@ namespace Suspended.Backend
         // ================================
         public WindowProcessManager(TimeSpan refreshRate)
         {
+
+            localState = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                @"\Packages\BassemNomany.SuspendedNTime_ah2yj8jdj20z4\LocalState\Icons";
+
             this.refreshRate = refreshRate;
             refreshTimer = new Timer(
             _ => { if (refreshEnabled) RefreshState(); },
@@ -183,50 +192,60 @@ namespace Suspended.Backend
 
             EnumWindows((hWnd, _) =>
             {
-            if (!IsWindowVisible(hWnd))
-                return true; // skip
+                if (!IsWindowVisible(hWnd))
+                    return true; // skip
 
-            //if (IsCloaked(hWnd))
-            //    return true; // skip cloaked/UWP windows
+                //if (IsCloaked(hWnd))
+                //    return true; // skip cloaked/UWP windows
 
-            current.Add(hWnd);
+                current.Add(hWnd);
 
-            uint pid;
-            GetWindowThreadProcessId(hWnd, out pid);
+                uint pid;
+                GetWindowThreadProcessId(hWnd, out pid);
 
-            var titleSb = new StringBuilder(512);
-            GetWindowText(hWnd, titleSb, titleSb.Capacity);
+                var titleSb = new StringBuilder(512);
+                GetWindowText(hWnd, titleSb, titleSb.Capacity);
 
-            string title = titleSb.ToString();
-            if (string.IsNullOrWhiteSpace(title))
-                return true; // skip windows with no title
+                string title = titleSb.ToString();
+                if (string.IsNullOrWhiteSpace(title))
+                    return true; // skip windows with no title
 
-            // process executable
-            String processName = "";
-            try
-            {
-                using (var process = Process.GetProcessById((int)pid))
+                // process executable
+                String processName = "";
+                try
                 {
+                    using (var process = Process.GetProcessById((int)pid))
+                    {
                         processName = process.ProcessName;
                         if (IsWhitelisted(process.ProcessName))
                         {
                             //Console.WriteLine($"[GameSuspendController] Skipping whitelisted process: {process.ProcessName}");
                             return true; // skip windows with no title
                         }
+                    }
                 }
-            }
-            catch
-            {
-                return true; // process no longer exists → skip
-            }
+                catch
+                {
+                    return true; // process no longer exists → skip
+                }
 
-            if (!windows.ContainsKey(hWnd))
-            {
+                if (!windows.ContainsKey(hWnd))
+                {
                     var size = 1024;
                     var iconSb = new StringBuilder(size);
                     var handle = OpenProcess(QueryLimitedInformation, false, (int)pid);
                     var success = QueryFullProcessImageName(handle, 0, iconSb, ref size);
                     CloseHandle(handle);
+
+
+                    string fullExePath = iconSb.ToString();
+                    string exeName = System.IO.Path.GetFileName(fullExePath);
+                    string cacheFileName = exeName + ".png";
+                    string cacheRelativePath = "Icons/" + cacheFileName;
+
+                    string msAppDataUri = "ms-appdata:///local/" + cacheRelativePath;
+
+                    TriggerIconBuild(fullExePath, exeName);
 
                     var info = new WindowInfo
                     {
@@ -234,13 +253,14 @@ namespace Suspended.Backend
                         ProcessId = (int)pid,
                         Title = titleSb.ToString(),
                         ProcessName = processName,
-                        ProcessIconPath = iconSb.ToString()
+                        ProcessExePath = iconSb.ToString(),
+                        ProcessIconPath = msAppDataUri
                     };
 
-                        windows[hWnd] = info;
+                    windows[hWnd] = info;
 
-                        OnWindowAppeared?.Invoke(info);
-                    }
+                    OnWindowAppeared?.Invoke(info);
+                }
 
                 return true;
             }, IntPtr.Zero);
@@ -305,17 +325,6 @@ namespace Suspended.Backend
                     return t.ThreadState == System.Diagnostics.ThreadState.Wait &&
                            t.WaitReason == ThreadWaitReason.Suspended;
                 }
-
-                /*
-                // Sccan all threads for suspended state
-                foreach (ProcessThread thread in process.Threads)
-                {
-                    if (thread.ThreadState == System.Diagnostics.ThreadState.Wait &&
-                        thread.WaitReason == ThreadWaitReason.Suspended)
-                    {
-                        return true;
-                    }
-                }*/
             }
             catch { }
             return false;
@@ -328,12 +337,23 @@ namespace Suspended.Backend
             {
                 ProcessId = w.ProcessId,
                 Title = w.Title,
-                ProcessIconPath = w.ProcessIconPath,
+                IconPath = w.ProcessIconPath,
                 IsSuspended = w.IsSuspended
             }).ToList();
         }
-    }
 
+        private void TriggerIconBuild(string fullExePath, string exeName)
+        {
+            Directory.CreateDirectory(localState);
+            string cachePath = System.IO.Path.Combine(localState, exeName + ".png");
+
+            if (!File.Exists(cachePath))
+            {
+                using Bitmap bmp = GameIconExtractor.IconHelper.GetExeIcon(fullExePath, 64);
+                bmp.Save(cachePath, ImageFormat.Png);
+            }
+        }
+    }
 
     // ================================
     //  Supporting Data Types
@@ -344,6 +364,7 @@ namespace Suspended.Backend
         public int ProcessId { get; set; }
         public string Title { get; set; } = "";
         public string ProcessName { get; set; } = "";
+        public string ProcessExePath { get; set; } = "";
         public string ProcessIconPath { get; set; } = "";
         public bool IsSuspended { get; set; }
     }
@@ -355,7 +376,8 @@ namespace Suspended.Backend
         }
         public int ProcessId { get; set; }
         public string Title { get; set; } = "";
-        public string ProcessIconPath { get; set; } = "";
+        public string IconPath { get; set; } = "";
         public bool IsSuspended { get; set; }
     }
+  
 }

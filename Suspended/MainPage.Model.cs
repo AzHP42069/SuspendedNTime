@@ -17,7 +17,7 @@ namespace Suspended
         }
         public int ProcessId { get; set; }
         public string Title { get; set; } = "";
-        public string ProcessIconPath { get; set; } = "";
+        public string IconPath { get; set; } = "";
         public bool IsSuspended { get; set; }
     }
 

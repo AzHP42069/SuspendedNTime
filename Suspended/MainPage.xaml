@@ -37,7 +37,7 @@
         <CornerRadius x:Key="ControlCornerRadius">8,8,8,8</CornerRadius>
         <Thickness x:Key="ButtonPadding">15,10,15,11</Thickness>
         <local:BooleanToVisibilityConverter  x:Key="BooleanToVisibilityConverter"/>
-        <local:IconConverter  x:Key="IconConverter"/>
+        <local:ExePathToIconConverter  x:Key="ExePathToIconConverter"/>
         <local:BooleanToSuspendedStateConverter  x:Key="BooleanToSuspendedStateConverter"/>
         <local:BooleanToNegativeVisibilityConverter x:Key="BooleanToNegativeVisibilityConverter"/>
         <local:ColorToSuspendedStateConverter  x:Key="ColorToSuspendedStateConverter"
@@ -153,7 +153,7 @@
                           XYFocusDown="{x:Bind AutoSuspendToggle}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,15,0,15">
+                            <Grid Margin="0,15,15,15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <!-- 0: Icon -->
@@ -163,9 +163,13 @@
                                     <!-- 2: FontIcon(s) -->
                                 </Grid.ColumnDefinitions>
                                 <!-- Process Icon -->
+                                <!-- Source="{Binding IconPath, Converter={StaticResource ExePathToIconConverter}}" -->
+                                <!-- Source="ms-appx:///Assets//info.png" -->
                                 <Image Width="64" Height="64" Grid.Column="0"
-                               Source="ms-appx:///Assets//info.png" HorizontalAlignment="Left">
+                                       Source="{Binding IconPath}"
+                                       HorizontalAlignment="Left">
                                 </Image>
+
 
                                 <StackPanel x:Name="GameTextStack" Grid.Column="1" Orientation="Vertical" Margin="15,0,0,0">
 

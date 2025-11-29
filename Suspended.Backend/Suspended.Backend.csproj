@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Communication.cs" />
     <Compile Include="GameSuspendController.cs" />
+    <Compile Include="GameIconExtractor.cs" />
     <Compile Include="WindowProcessStateManager.cs" />
     <Compile Include="ModernStandbyMonitor.cs" />
     <Compile Include="PowerPolicyController.cs" />
