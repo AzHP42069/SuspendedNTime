@@ -37,6 +37,7 @@ namespace Suspended.Backend
         private TimeSpan refreshRate;
         private bool refreshEnabled = true;
         string localState = "";
+        public bool suspendOnFocusLost = false;
 
         // ================================
         // Win32 API
@@ -102,6 +103,7 @@ namespace Suspended.Backend
             "Code",
             "Discord",
             "NVIDIA Overlay",
+            "NVIDIA App",
             "Notepad",
             "XboxPcApp"
         };
@@ -153,6 +155,8 @@ namespace Suspended.Backend
 
         public TimeSpan GetRefreshRate() => refreshRate;
         public bool IsRefreshing => refreshEnabled;
+
+        public bool IsForegroundAppSuspended = false;
 
         // ================================
         // Refresh Logic
@@ -286,13 +290,28 @@ namespace Suspended.Backend
         private void RefreshForeground()
         {
             IntPtr fg = GetForegroundWindow();
+
+            if (windows.TryGetValue(fg, out var currentFocusGame))
+                IsForegroundAppSuspended = currentFocusGame.IsSuspended;
+
             if (fg != lastForeground)
             {
+                if (suspendOnFocusLost)
+                {
+                    if (windows.TryGetValue(lastForeground, out var lastFocusGameInfo))
+                    {
+                        if (!lastFocusGameInfo.IsSuspended)
+                        {
+                            GameSuspendController.SuspendApp(lastFocusGameInfo.ProcessId);
+                        }
+                    }
+                }
+
                 lastForeground = fg;
                 lock (windowsLock)
                 {
-                    if (windows.TryGetValue(fg, out var info))
-                        OnForegroundChanged?.Invoke(info);
+                    if (windows.TryGetValue(fg, out var currentFocusGameInfo))
+                        OnForegroundChanged?.Invoke(currentFocusGameInfo);
                 }
             }
         }

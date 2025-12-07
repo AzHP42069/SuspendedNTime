@@ -68,6 +68,8 @@ namespace Suspended
             Backend.Instance.Send("get-go-back-to-sleep");
             Backend.Instance.Send("get-power-button-action");
             Backend.Instance.Send("get-enhanced-sleep");
+            Backend.Instance.Send("get-suspend-focus-loss");
+            Backend.Instance.Send("get-foreground-suspended");
             Backend.Instance.Send("get-game-list");
             Backend.Instance.Send("init");
         }
@@ -120,6 +122,11 @@ namespace Suspended
                     _model.PowerButtonAction = int.Parse(args[1]);
                     PowerButtonActionComboBox.SelectedValue = _model.PowerButtonAction;
                     break;
+                case "suspend-focus-loss":
+                    Trace.WriteLine($"[MainPage.xaml.cs] Updating UI Suspend On Focus Loss to {args[1]}");
+                    _model.SuspendOnFocusLoss = Convert.ToBoolean(int.Parse(args[1]));
+                    AutoSuspendFocusToggle.IsOn = _model.SuspendOnFocusLoss;
+                    break;
                 case "game-list":
                     Trace.WriteLine($"[MainPage.xaml.cs] Updating GameList");
                     
@@ -147,6 +154,10 @@ namespace Suspended
                     Trace.WriteLine($"[MainPage.xaml.cs] Updating UI Enhanced Sleep {args[1]}");
                     _model.EnhancedSleepEnabled = Convert.ToBoolean(int.Parse(args[1]));
                     EnhancedSleepToggle.IsOn = _model.EnhancedSleepEnabled;
+                    break;
+                case "foreground-suspended":
+                    Trace.WriteLine($"[MainPage.xaml.cs] Updating UI Foregroudn Suspended {args[1]}");
+                    _model.ForegroundGameSuspended = Convert.ToBoolean(args[1]);
                     break;
             }
         }
@@ -190,6 +201,16 @@ namespace Suspended
             if (sender is ToggleSwitch toggleSwitch)
             {
                 _model.SetAutoSuspendEnabledVar(toggleSwitch.IsOn);
+            }
+        }
+
+        private void AutoSuspedFocusToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            // handle Auto Suspend toggle changes
+            // handle Enhanced Sleep toggle changes
+            if (sender is ToggleSwitch toggleSwitch)
+            {
+                _model.SetSuspendOnFocusLossVar(toggleSwitch.IsOn);
             }
         }
 

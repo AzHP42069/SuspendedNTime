@@ -45,6 +45,13 @@ namespace Suspended.Backend
             GameProcessManager.OnForegroundChanged += ForegroundGameWindowChanged;
             GameProcessManager.OnProcessSuspended += GameProcessSuspended;
             GameProcessManager.OnProcessResumed += GameProcessResumed;
+
+            int suspendOnFocusLoss = SettingsManager.Get<int>("SuspendOnFocusLoss");
+            if (suspendOnFocusLoss == 1)
+                GameProcessManager.suspendOnFocusLost = true;
+            else
+                GameProcessManager.suspendOnFocusLost = false;
+
             GameProcessManager.StartRefresh();
         }
 
@@ -236,6 +243,34 @@ namespace Suspended.Backend
                         }
                     }
                     break;
+
+                case "get-suspend-focus-loss":
+                    {
+                        int suspendOnFocusLoss = SettingsManager.Get<int>("SuspendOnFocusLoss");
+                        Console.WriteLine($"[Server Handler] Responding with Suspend On Focus Loss {suspendOnFocusLoss}");
+                        (sender as Communication).Send($"suspend-focus-loss" + ' ' + $"{suspendOnFocusLoss}");
+                    }
+                    break;
+                case "set-suspend-focus-loss":
+                    {
+                        if (int.TryParse(args[1], out int suspendOnFocusLoss))
+                        {
+                            SettingsManager.Set("SuspendOnFocusLoss", suspendOnFocusLoss);
+                            if (suspendOnFocusLoss == 1)
+                                GameProcessManager.suspendOnFocusLost = true;
+                            else
+                                GameProcessManager.suspendOnFocusLost = false;
+                            Console.WriteLine($"[Server Handler] Setting Suspend On Focus Loss to {suspendOnFocusLoss}");
+                        }
+                    }
+                    break;
+
+                case "get-foreground-suspended":
+                    {
+                        Console.WriteLine($"[Server Handler] Responding with current foreground is suspeneded {GameProcessManager.IsForegroundAppSuspended}");
+                        (sender as Communication).Send($"foreground-suspended" + ' ' + $"{GameProcessManager.IsForegroundAppSuspended}");
+                    }
+                    break;
                 default:
                     break;
             }
@@ -287,6 +322,7 @@ namespace Suspended.Backend
         private void ForegroundGameWindowChanged(WindowInfo win)
         {
             Console.WriteLine($"[Server Handler] ForegroundGameWindowChanged PID={win.ProcessId}, Hwnd={win.Handle}, Name='{win.ProcessName}' , Title='{win.Title}', IsSuspended='{win.IsSuspended}', Icon Path= {win.ProcessIconPath} ");
+            _communication.Send("foreground-suspended " + GameProcessManager.IsForegroundAppSuspended);
         }
 
         private void GameProcessSuspended(WindowInfo win)

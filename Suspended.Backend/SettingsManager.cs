@@ -14,6 +14,7 @@ namespace Suspended.Backend
             { "AutoSuspend", 0 },
             { "GoBackToSleep", 0 },
             { "EnhancedSleep", 0 },
+            { "SuspendOnFocusLoss", 0 },
         };
 
         /// <summary>

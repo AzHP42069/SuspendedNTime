@@ -94,6 +94,14 @@ namespace Suspended.Backend
             "Tooth",
             "Suspended",
             "WindowsTerminal",
+            "devenv",
+            "msedge",
+            "Code",
+            "Discord",
+            "NVIDIA Overlay",
+            "NVIDIA App",
+            "Notepad",
+            "XboxPcApp"
         };
 
         public static IntPtr GetMainWindowHandle(int pid)
@@ -357,6 +365,5 @@ namespace Suspended.Backend
                 CloseHandle(hProc);
             }
         }
-
     }
 }

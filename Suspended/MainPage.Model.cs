@@ -222,6 +222,49 @@ namespace Suspended
             }
         }
 
+        public bool SuspendOnFocusLoss
+        {
+            get { lock (_base) { return _base.suspendOnFocusLoss; } }
+            set
+            {
+                lock (_base)
+                {
+                    if (_base.suspendOnFocusLoss != value)
+                    {
+                        _base.suspendOnFocusLoss = value;
+                        _base.Notify("SuspendOnFocusLoss");
+                    }
+                }
+            }
+        }
+        public void SetSuspendOnFocusLossVar(bool value)
+        {
+            lock (_base)
+            {
+                if (_base.suspendOnFocusLoss != value)
+                {
+                    _base.suspendOnFocusLoss = value;
+                    Backend.Instance.Send($"set-suspend-focus-loss {Convert.ToInt32(value)}");
+                    _base.Notify("SuspendOnFocusLoss");
+                }
+            }
+        }
+
+        public bool ForegroundGameSuspended
+        {
+            get { lock (_base) { return _base.foregroundGameSuspended; } }
+            set
+            {
+                lock (_base)
+                {
+                    if (_base.foregroundGameSuspended != value)
+                    {
+                        _base.foregroundGameSuspended = value;
+                        _base.Notify("ForegroundGameSuspended");
+                    }
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -251,6 +294,8 @@ namespace Suspended
         public double powerButtonAction = 2; // 0: Sleep, 1: Hibernate
         public bool enhancedSleepEnabled = false;
         public ObservableCollection<GameInfo> gamesList;
+        public bool suspendOnFocusLoss = false;
+        public bool foregroundGameSuspended = false;
 
         private List<MainPageModelWrapper> _wrappers = new List<MainPageModelWrapper>();
 

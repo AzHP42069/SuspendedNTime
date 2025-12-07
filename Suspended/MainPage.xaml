@@ -109,21 +109,15 @@
                 
                 
                 <!-- Resume and Suspend Games -->
-                <Grid HorizontalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="16"/>
-                        <!-- Space between buttons -->
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <Grid HorizontalAlignment="Stretch">
 
                     <!-- Resume Button -->
                     <Button
                     Grid.Column="0"
                     x:Name="ResumeButton"
-                    Width="190"
                     Height="44"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Stretch"
+                    Visibility="{Binding ForegroundGameSuspended, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Click="OnResumeButtonClick">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
                             <FontIcon Glyph="&#xE768;" FontSize="18"/>
@@ -136,9 +130,9 @@
                     <Button
                     Grid.Column="2"
                     x:Name="SuspendButton"
-                    Width="190"
                     Height="44"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Stretch"
+                    Visibility="{Binding ForegroundGameSuspended, Converter={StaticResource BooleanToNegativeVisibilityConverter}}"
                     Click="OnSuspendButtonClick">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
                             <FontIcon Glyph="&#xE769;" FontSize="18"/>
@@ -265,8 +259,8 @@
                         OnContent="On"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
-                        IsOn="{Binding AutoSuspendEnabled, Mode=OneWay}"
-                        Toggled="AutoSuspedToggle_Toggled"
+                        IsOn="{Binding SuspendOnFocusLoss, Mode=OneWay}"
+                        Toggled="AutoSuspedFocusToggle_Toggled"
                         XYFocusUp="{x:Bind AutoSuspendToggle}"
                         XYFocusDown="{x:Bind PowerButtonActionComboBox}"/>
                         </Grid>
