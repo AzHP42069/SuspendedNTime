@@ -91,9 +91,10 @@ Click the badge below open directly:
 
 
 # Supported Devices
-It should be compatiable with any Windows PC. However, I have only tested on the following hardware:
-- Windows Desktop with AMD 7950X3D and Nvidia RTX GPU
+It should be compatiable with any Windows PC. However, I have only tested on the following hardware combinations:
+- Desktop PC with AMD 7950X3D and Nvidia RTX GPU
 - Handheld PC: MSI Claw 8 AI+ A2VM with Intel Lunar Lake.
+- Laptop PC: AMD HX 370 with Nvidia 4070
 
 # Bugs & Features
 Found a bug and want it fixed? Have an idea for a new feature?
