@@ -101,9 +101,8 @@ Found a bug and want it fixed? Have an idea for a new feature?
 Please [open an issue](https://github.com/BassemMohsen/SuspendedNTime/issues) in the tracker.  
 
 # Credits & Libraries
+Suspended N Time have drawn some inspiration and learnings for use cases from:
 - [Merrit/nyrna](https://github.com/Merrit/nyrna)
-
-Suspended N Time have drawn some inspiration for use cases from:
 - XBox [Quick Resume](https://www.pcmag.com/how-to/how-to-switch-between-games-with-quick-resume-on-xbox-series-x-series-s)
 - Decky Load Steam Deck Plugin [Pause Game](https://github.com/popsUlfr/SDH-PauseGames)
 
